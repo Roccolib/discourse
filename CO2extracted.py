@@ -1,0 +1,47 @@
+import flask
+from flask import Flask,jsonify,json
+from flask import request
+#import json
+import requests
+
+
+
+
+#lancer le module Flask à l'execution de l'api
+app = flask.Flask(__name__)
+
+#pas d'affichage des details des messages d erreur
+app.config["DEBUG"] = False
+
+#decrire l'acces a partir de root/messahesKafka limité a la fonction POST depuis le WEB
+@app.route('/CO2extracted', methods=['POST'])
+def extract_CO2value():
+ bootstrap_servers = ['localhost:9092']
+
+#valeurs recuperees de orchestre
+ payload = request.data
+
+#extraction de CO2 du payload
+ try:
+     mySbMsg = str(payload)
+     mySbMsg = mySbMsg.upper()
+     mySbMsg = mySbMsg.replace(" ", "")
+     posEq = mySbMsg.index("DIOX")
+     posCO2 = mySbMsg.index("CO2")
+     lengthEcoCO2 = posCO2-posEq
+     ecoCO2Str = mySbMsg[posEq+9:posCO2]
+     CO2 = ecoCO2Str
+     try:
+         CO2 == int(CO2)
+         print(CO2)
+         return(CO2), 200
+     except:
+         return(CO2), 406
+ except:
+     print("payload mal formaté")
+     return(payload), "406"
+
+if __name__ == '__main__':
+
+
+ app.run(debug=False, port=5003, host='0.0.0.0')
