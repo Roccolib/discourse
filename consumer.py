@@ -3,7 +3,7 @@ import requests
 import flask
 from flask import Flask,jsonify,json
 
-#troisieme test pour commit 14h49 le 1703
+ #4 test pour commit 15h09 le 1703
 
 consumer=KafkaConsumer(
     'topicDiscMessage',
