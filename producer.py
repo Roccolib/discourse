@@ -5,7 +5,7 @@ from flask import request
 import json
 import base64
 import requests
- #tet le 17 a 15h19
+ #test le 17 a 15h19
 
 #lancer le module Flask à l'execution de l'api
 app = flask.Flask(__name__)
