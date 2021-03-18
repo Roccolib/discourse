@@ -20,6 +20,7 @@ def extract_CO2value():
 
 #valeurs recuperees de orchestre
  payload = request.data
+ payload = payload.decode("utf-8")
 
 #extraction de CO2 du payload
  try:
@@ -29,13 +30,14 @@ def extract_CO2value():
      posEq = mySbMsg.index("DIOX")
      posCO2 = mySbMsg.index("CO2")
      lengthEcoCO2 = posCO2-posEq
-     ecoCO2Str = mySbMsg[posEq+9:posCO2]
+     ecoCO2Str = mySbMsg[posEq+10:posCO2]
      CO2 = ecoCO2Str
      try:
-         CO2 == int(CO2)
+         CO2 = int(CO2)
          print(CO2)
-         return(CO2), 200
+         return(str(CO2)), 200
      except:
+         print(CO2)
          return(CO2), 406
  except:
      print("payload mal formaté")
