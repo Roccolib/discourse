@@ -1,4 +1,4 @@
-hfrom kafka import KafkaConsumer
+from kafka import KafkaConsumer
 import requests
 import flask
 from flask import Flask,jsonify,json
