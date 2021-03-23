@@ -1,0 +1,110 @@
+import flask
+from flask import Flask,jsonify,json
+from flask import request
+import json
+import requests
+import hashlib
+
+
+
+#lancer le module Flask à l'execution de l'api
+app = flask.Flask(__name__)
+
+#pas d'affichage des details des messages d erreur
+app.config["DEBUG"] = True
+
+#decrire l'acces a partir de root/messahesKafka limité a la fonction POST depuis le WEB
+@app.route('/orchestrator', methods=['POST'])
+
+
+def post_orchestrator():
+
+#recuperation des infos recues de postman
+ payload_object = request.data
+ contentType = request.headers.get('Content-Type')
+ source = request.headers.get('User-Agent')
+ topicNameC = "topicDiscourseMessage"
+ topicNameR = "topicaTraiter"
+ topicNameE = "topicCO2extracted"
+# print(payload_object)
+#conditions requises de topicname et content-type pour envoyer le contenu de data a producer
+#liste des formats de texte recuperables
+ importables = ['application/json', 'text/plain', 'image/jpeg']
+ if source is None :
+     topicName = topicNameR
+ if contentType is None :
+     contentType = 'text/plain'
+
+ if "discourse" in source and contentType in importables:
+      Type = contentType
+      try:
+          json_object = (json.loads(payload_object)) and ('application/json' in contentType)
+          print("Json")
+          Type = 'application/json'
+      except:
+          print("texte")
+          Type = 'text/plain'
+      contentType = Type
+      topicName = topicNameC   #"topicDiscourseMessage"
+
+ else:
+
+      topicName = topicNameR
+ if source is not None :
+     headers = {"HTTP_HOST": "MyVeryOwnHost", "topicName": topicName, "topicNameR": topicNameR,  "contentType": contentType }
+     url = 'http://vmkafka3.uksouth.cloudapp.azure.com:5001/messageBroker'
+     payProd = requests.post(url = url, data = payload_object, headers = headers)
+ #    print("status code reponse du post vers producer : ", contentType, payProd.status_code)
+ else:
+     print("notsource")
+
+
+#recuperation des donnees venant de consumer
+ payVal = request.data
+ importables = ['application/json', 'text/plain']
+ #return("consum processed"),200
+# print(payVal)
+
+ if payVal is not None:   # and topicName = "topicDiscourseMessage" and contentType in importables:
+#envoi des donnees a CO2extracted
+#     payVal = request.data
+#     importables = ['application/json', 'text/plain']
+     headers = {"HTTP_HOST": "postMessageToExtractValue", "topicName" : topicName, "topicNameR": topicNameR, "contentType": contentType }
+     urlCO2Ext = 'http://vmkafka3.uksouth.cloudapp.azure.com:5003/CO2extracted'
+     payloadValue = requests.post(url = urlCO2Ext, data = payVal, headers = headers)
+    # print("status code de post vers CO2extracted : ", payloadValue.status_code)
+     CO2 = payloadValue.text
+     verif = str(payloadValue.status_code)
+
+ else:
+     print("payload empty")
+
+#recuperation de la valeur de CO2 de CO2extracted  et envoi vers producer
+   #  print("recuperation du traitement de CO2extracted : ", CO2)
+
+ if "200" in  verif:
+     topicName = topicNameE    #"topicCO2extracted"
+     contentType = 'application/json'
+ else:
+     topicName = topicNameR    #"topicaTraiter"
+     contentType = 'text/plain'
+
+ #print("futur topic : ", topicName, contentType)
+ headers = {"HTTP_HOST": "MyVeryOwnHost", "topicName": topicName, "topicNameR": topicNameR, "contentType": contentType }
+ urlProduc = 'http://vmkafka3.uksouth.cloudapp.azure.com:5001/messageBroker'
+ COProd = requests.post(url = urlProduc, data = CO2, headers = headers)
+ print("valeur traitee de CO2 envoyee de orchestre vers producer : ", topicName, contentType, CO2)
+# print("status code de post vers producer : ", COProd.status_code)
+# return(CO2)
+
+#recupération de CO2 venant de consumerdouble-Kafka
+ CO2Valeur = request.data
+ print("valeur recuperee pour bloc-chain :  ", CO2Valeur)
+ return(CO2Valeur)
+
+
+
+if __name__ == '__main__':
+ app.run(debug=False,port=5000, host='0.0.0.0')
+
+

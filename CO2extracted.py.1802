@@ -1,0 +1,64 @@
+import flask
+from flask import Flask,jsonify,json
+from flask import request
+#import json
+import requests
+
+
+
+#lancer le module Flask à l'execution de l'api
+app = flask.Flask(__name__)
+
+#pas d'affichage des details des messages d erreur
+app.config["DEBUG"] = True
+
+#decrire l'acces a partir de root/messahesKafka limité a la fonction POST depuis le WEB
+@app.route('/CO2extracted',  methods=['POST'])
+
+
+
+#def extract_CO2value():
+
+
+def extract_CO2value():
+
+ bootstrap_servers = ['localhost:9092']
+
+#valeurs recuperees de orchestre
+ payloadValue = request.get_data()
+
+#extraction de CO2 du payload
+ mySbMsg = str(payloadValue)
+ mySbMsg = mySbMsg.upper()
+ mySbMsg = mySbMsg.replace(" ", "")
+ try:
+     posEq = mySbMsg.index("DIOX")
+     posCO2 = mySbMsg.index("CO2")
+     lengthEcoCO2 = posCO2-posEq
+#si le payload ne permet pas d extraire une valeur
+ except (NameError, ValueError):
+     ecoCO2 = 1
+
+ else:
+     #lengthEcoCO2 = posCO2-posEq
+     ecoCO2Str = mySbMsg[posEq+9:posCO2]
+     ecoCO2 = str(ecoCO2Str)
+
+#     print("avant return :", ecoCO2)
+ return(ecoCO2)
+
+ ecoCO2 = extract_CO2value(data)
+ coCO2 = ecoCO2
+
+#envoi du resultat a orchestre
+ data = request.get_data()
+ coCO2 = payloadValue
+ headers = {"HTTP_HOST": "MyVeryOwnHost", "topicName": "discourseMessage", "source": "discourse","Content-Type": 'text/plain' }
+ url = 'http://vmkafka3.uksouth.cloudapp.azure.com:5000/orchestrator'
+ requests.post(url = url, data = coCO2, headers = headers)
+
+
+if __name__ == '__main__':
+
+
+ app.run(debug=False, port=5003, host='0.0.0.0')

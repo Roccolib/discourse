@@ -1,0 +1,63 @@
+#header
+
+Request URL: http://vmkafka3.uksouth.cloudapp.azure.com:5000/messagesBroker
+Request method: POST
+Accept: */*
+Connection: close
+Content-Length: 994
+Content-Type: application/json
+Host: vmkafka3.uksouth.cloudapp.azure.com
+User-Agent: Discourse/2.6.0.beta5
+X-Discourse-Instance: http://forumtokenit.westeurope.cloudapp.azure.com:8083
+X-Discourse-Event-Id: 35
+X-Discourse-Event-Type: post
+X-Discourse-Event: post_created
+
+#payload
+
+{
+  "post": {
+    "id": 22,
+    "name": null,
+    "username": "phoenix",
+    "avatar_template": "/letter_avatar_proxy/v4/letter/p/0ea827/{size}.png",
+    "created_at": "2021-02-09T12:28:48.133Z",
+    "cooked": "<p>test eco kCO2= -89KCO2 c est pas mal</p>",
+    "post_number": 8,
+    "post_type": 1,
+    "updated_at": "2021-02-09T12:28:48.133Z",
+    "reply_count": 0,
+    "reply_to_post_number": null,
+    "quote_count": 0,
+    "incoming_link_count": 0,
+    "reads": 0,
+    "score": 0,
+    "topic_id": 11,
+    "topic_slug": "test-topic-de-plus-de-15",
+    "topic_title": "Test topic de plus de 15",
+    "category_id": 1,
+    "display_username": null,
+    "primary_group_name": null,
+    "version": 1,
+    "user_title": null,
+    "bookmarked": false,
+    "raw": "\ntest eco = -89KCO2 c est pas mal",
+    "moderator": false,
+    "admin": true,
+    "staff": true,
+    "user_id": 1,
+    "hidden": false,
+    "trust_level": 1,
+    "deleted_at": null,
+    "user_deleted": false,
+    "edit_reason": null,
+    "wiki": false,
+    "reviewable_id": null,
+    "reviewable_score_count": 0,
+    "reviewable_score_pending_count": 0,
+    "topic_posts_count": 8,
+    "topic_filtered_posts_count": 8,
+    "topic_archetype": "regular",
+    "category_slug": "uncategorized"
+  }
+}
