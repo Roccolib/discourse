@@ -30,7 +30,7 @@ def extract_CO2value():
      posEq = mySbMsg.index("DIOX")
      posCO2 = mySbMsg.index("CO2")
      lengthEcoCO2 = posCO2-posEq
-     ecoCO2Str = mySbMsg[posEq+10:posCO2]
+     ecoCO2Str = mySbMsg[posEq+5:posCO2-1]
      CO2 = ecoCO2Str
      try:
          CO2 = int(CO2)

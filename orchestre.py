@@ -47,10 +47,6 @@ def post_orchestrator():
    CO2 = str(CO2ExtObject.text)
 
    #2- poster vers producer pour post sur kafka>topicCO2Extracted
-#   if CO2 is not None:
-#    topicName = topicNameCo2Extracted
-#   else:
-#    topicName = topicNamePending
    topicName = topicNameCo2Extracted
    headers = {"HTTP_HOST": "MyVeryOwnHost", "topicName": topicName, "contentType": 'text/plain' }
    urlProduc = 'http://vmkafka3.uksouth.cloudapp.azure.com:5001/messageBroker'
