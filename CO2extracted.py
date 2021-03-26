@@ -1,7 +1,7 @@
 import flask
 from flask import Flask,jsonify,json
 from flask import request
-#import json
+import json
 import requests
 
 
@@ -21,6 +21,10 @@ def extract_CO2value():
 #valeurs recuperees de orchestre
  payload = request.data
  payload = payload.decode("utf-8")
+ jdata = json.loads(payload)
+ discId = jdata["post"]["id"]
+ discUser = jdata["post"]["username"]
+ discDate = jdata["post"]["updated_at"]
 
 #extraction de CO2 du payload
  try:
@@ -32,10 +36,18 @@ def extract_CO2value():
      lengthEcoCO2 = posCO2-posEq
      ecoCO2Str = mySbMsg[posEq+5:posCO2-1]
      CO2 = ecoCO2Str
+     valeurs = {
+               "discourse_id" : discId,
+               "discourse_username" : discUser,
+               "discourse_heure" : discDate,
+               "valeur_CO2" : CO2
+               }
+     valeurs = json.dumps(valeurs)
+     print(valeurs)
      try:
          CO2 = int(CO2)
          print(CO2)
-         return(str(CO2)), 200
+         return(valeurs), 200
      except:
          print(CO2)
          return(CO2), 406

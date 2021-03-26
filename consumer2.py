@@ -25,6 +25,8 @@ def consume_messages():
         message_batch = consumer.poll()
         for msg in consumer:
             CO2 = msg.value
+            CO2 = CO2.decode("utf-8")
+#            CO2 = json.dumps(CO2)
             print(CO2)
             headers = {"HTTP_HOST": "MyVeryOwnHost", "User-Agent": "topicCO2Kafka" }
             urlConsum = 'http://vmkafka3.uksouth.cloudapp.azure.com:5000/orchestrator'

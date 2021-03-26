@@ -21,8 +21,16 @@ def jsonning_CO2value():
 
 #valeurs recuperees de orchestre
  payload = request.data
- print("valeur de CO2 a integrer", payload)
- CO2 = payload.decode("utf-8")
+# print("valeur de CO2 a integrer", payload)
+ payload = payload.decode("utf-8")
+ jdata = json.loads(payload)
+ CO2 = 55
+ print(payload)
+
+# id = jdata["discourse_id"]
+# CO2 = jdata["valeur_CO2"]
+
+# CO2 = payload.decode("utf-8")
  CO2 = int(CO2)
  CO2 = hex(CO2)
  print(CO2)
@@ -37,7 +45,7 @@ def jsonning_CO2value():
  "value": CO2,
  "data": "0xd46e8dd67c5d32be8d46e8dd67c5d32be8058bb8eb970870f072445675058bb8eb970870f072445675"
  }],
- "id":1
+ "id":id
  }
 
  model = json.dumps(model)

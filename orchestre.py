@@ -56,12 +56,13 @@ def post_orchestrator():
 
   elif "topicCO2Kafka" in source:
    payload = request.data
-   print("payload de consumer2 ", payload)
+   payload = payload.decode("utf-8")
+   print("payload recu de consumer2 ", payload)
    headers = {"HTTP_HOST": "postMessageToExtractValue" }
    urlCO2Json = 'http://vmkafka3.uksouth.cloudapp.azure.com:5005/CO2Json2Blockchain'
    CO2Json4Blockchain = requests.post(url = urlCO2Json, data = payload, headers = headers)
    CO2 = CO2Json4Blockchain.text
-   print("j'ai recupere CO2 pour blockchain", CO2)
+   print("j'ai recupere CO2 du formateur pour blockchain", CO2)
    return(CO2)
    headers = {"HTTP_HOST": "postMessageToExtractValue" }
    urlCO2Json = 'http://13.81.97.209:8545'
