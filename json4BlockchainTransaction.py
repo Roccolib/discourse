@@ -29,16 +29,15 @@ def jsonning_CO2value():
 
  id = jdata["discourse_id"]
  CO2 = jdata["valeur_CO2"]
- date = jdata["modified_at"]
+ date = jdata["discourse_heure"]
 # CO2 = payload.decode("utf-8")
  CO2 = int(CO2)
  CO2 = hex(CO2)
  id = hex(id)
- 
  print(CO2, id)
  model = {
  "jsonrpc":"2.0",
- "date":date
+ "date":date,
  "method":"eth_sendTransaction",
  "params":[{
  "from": "0xedabf979f8337238f4da8091e8181696b8a9561e",
