@@ -24,15 +24,12 @@ def jsonning_CO2value():
 # print("valeur de CO2 a integrer", payload)
  payload = payload.decode("utf-8")
  jdata = json.loads(payload)
- CO2 = 55
  print(payload)
 
  id = jdata["discourse_id"]
- CO2 = jdata["valeur_CO2"]
  date = jdata["discourse_heure"]
-# CO2 = payload.decode("utf-8")
- CO2 = int(CO2)
- CO2 = hex(CO2)
+ CO2 = jdata["valeur_CO2"]
+ print("valeur de CO2", CO2)
  id = hex(id)
  print(CO2, id)
  model = {

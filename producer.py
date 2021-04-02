@@ -5,7 +5,7 @@ from flask import request
 import json
 import base64
 import requests
- #test le 17 a 15h19
+
 
 #lancer le module Flask à l'execution de l'api
 app = flask.Flask(__name__)
@@ -30,9 +30,8 @@ def post_messageBroker():
 
 #Si 'value' de Header est de type Json alors envoyer le contenu vers Kafka
  if contentType == 'application/json':
-     data = data.decode("utf-8")
-     data = json.dumps(data)
-     producer = KafkaProducer(value_serializer=lambda v: json.dumps(v).encode('utf-8'), bootstrap_servers='localhost:9092')
+     producer = KafkaProducer(bootstrap_servers='localhost:9092')
+#     producer = KafkaProducer(value_serializer=lambda v: json.dumps(v).encode('utf-8'), bootstrap_servers='localhost:9092')
      attente = producer.send(topicName, data)
      result = attente.get(timeout=0.1)
      print ("L ENVOI VERS KAFKA OK POUR JSON", contentType)
@@ -58,7 +57,7 @@ def post_messageBroker():
 
  else:
      contentType = "text/plain"
-     print("data au mauvais fornats recuperes pour text", data)
+     print("data au mauvais format recuperes pour text", data)
      producer = KafkaProducer(bootstrap_servers='localhost:9092')
      attente = producer.send(topicNameR, data)
      result = attente.get(timeout=0.1)

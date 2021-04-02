@@ -45,15 +45,16 @@ def extract_CO2value():
      valeurs = json.dumps(valeurs)
      print(valeurs)
      try:
-         CO2 = int(CO2)
+         type(CO2) is int
          print(CO2)
          return(valeurs), 200
      except:
+         CO2 = "0"
          print(CO2)
          return(CO2), 406
  except:
      print("payload mal formaté")
-     return(payload), "406"
+     return("bad CO2 value")     # payload), "406"
 
 if __name__ == '__main__':
 

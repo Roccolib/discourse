@@ -55,6 +55,7 @@ def post_orchestrator():
    return("CO2")
 
   elif "topicCO2Kafka" in source:
+
    payload = request.data
    payload = payload.decode("utf-8")
    print("payload recu de consumer2 ", payload)
