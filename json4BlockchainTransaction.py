@@ -31,6 +31,8 @@ def jsonning_CO2value():
  CO2 = jdata["valeur_CO2"]
  print("valeur de CO2", CO2)
  id = hex(id)
+ CO2 = int(CO2)
+ CO2 = hex(CO2)
  print(CO2, id)
  model = {
  "jsonrpc":"2.0",
