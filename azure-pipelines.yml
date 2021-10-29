@@ -18,9 +18,8 @@ steps:
     echo See https://aka.ms/yaml
   displayName: 'Run a multi-line script'
 
-
-- task: AzureVmssDeployment@0
+- task: DockerInstaller@0
+  displayName: Docker Installer
   inputs:
-    action: 'Update image'
-    vmssName: 'ubu8'
-    vmssOsType: 'Linux'
+    dockerVersion: 17.09.0-ce
+    releaseType: stable
