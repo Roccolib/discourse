@@ -19,7 +19,5 @@ steps:
   displayName: 'Run a multi-line script'
 
 - task: DockerInstaller@0
-  displayName: Docker Installer
   inputs:
-    dockerVersion: 17.09.0-ce
-    releaseType: stable
+    dockerVersion: '17.09.0-ce'
