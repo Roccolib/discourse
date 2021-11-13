@@ -27,5 +27,5 @@ jobs:
               containerregistrytype: 'Azure Container Registry'
               azureSubscription: 'Azure subscription 1(783128f5-f4d2-4f2c-bfe4-1d2af23c8de0)'
               azureContainerRegistry: '{"loginServer":"dockaf.azurecr.io", "id" : "/subscriptions/783128f5-f4d2-4f2c-bfe4-1d2af23c8de0/resourceGroups/vm-kafka3_group/providers/Microsoft.ContainerRegistry/registries/dockaf"}'
-              dockerComposeFile: '**/docker-compose.yml'
+              dockerComposeFile: '/azagent/azagent/azagent/azagent/_work/2/docker-compose.yml'
               action: 'run services'
