@@ -9,8 +9,6 @@ trigger:
 jobs:
 - deployment: VMDeploy
   displayName: kafka_containers
-  pool:
-    vmImage: ubuntu-latest
   environment:
     name: vm2v8g
     resourceType: VirtualMachine
@@ -20,7 +18,7 @@ jobs:
           steps:
           - download: current
             artifact: docker-compose
-            patterns: '**/docker-compose.yml'
+            patterns: 'https://greencoin2020@dev.azure.com/greencoin2020/Greencoin_project/_git/Greencoin_project/docker-compose.yml'
           - task: DockerInstaller@0
             inputs:
               dockerVersion: '17.09.0-ce'
