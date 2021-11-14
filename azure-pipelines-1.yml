@@ -31,15 +31,3 @@ steps:
     azureContainerRegistry: '{"loginServer":"dockkafkacr.azurecr.io", "id" : "/subscriptions/783128f5-f4d2-4f2c-bfe4-1d2af23c8de0/resourceGroups/resgrg/providers/Microsoft.ContainerRegistry/registries/dockkafkacr"}'
     dockerComposeFile: '**/docker-compose.yml'
     action: 'Run services'
-
-- task: AzureResourceManagerTemplateDeployment@3
-  inputs:
-    deploymentScope: 'Resource Group'
-    azureResourceManagerConnection: 'Azure subscription 1(783128f5-f4d2-4f2c-bfe4-1d2af23c8de0)'
-    subscriptionId: '783128f5-f4d2-4f2c-bfe4-1d2af23c8de0'
-    action: 'Create Or Update Resource Group'
-    resourceGroupName: 'vm-kafka3_group'
-    location: 'UK South'
-    templateLocation: 'URL of the file'
-    csmFileLink: 'https://greencoin2020@dev.azure.com/greencoin2020/Greencoin_project/_git/Greencoin_project/docker-compose.yml'
-    deploymentMode: 'Incremental'
