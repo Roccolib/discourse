@@ -19,13 +19,17 @@ jobs:
           - task: DockerInstaller@0
             inputs:
               dockerVersion: '17.09.0-ce'
-          - download: current
-            artifact: v2v8
-            patterns: 'https://greencoin2020@dev.azure.com/greencoin2020/Greencoin_project/_git/Greencoin_project/docker-compose.yml'
+          - task: CopyFilesOverSSH@0
+            inputs:
+              sshEndpoint: 'id_rsa'
+              sourceFolder: 'https://github.com/Roccolib/discourse/blob/master'
+              contents: 'docker-compose.yml'
+              readyTimeout: '20000'
+         
           - task: DockerCompose@0
             inputs:
               containerregistrytype: 'Azure Container Registry'
               azureSubscription: 'Azure subscription 1(783128f5-f4d2-4f2c-bfe4-1d2af23c8de0)'
-              azureContainerRegistry: '{"loginServer":"dockaf.azurecr.io", "id" : "/subscriptions/783128f5-f4d2-4f2c-bfe4-1d2af23c8de0/resourceGroups/vm-kafka3_group/providers/Microsoft.ContainerRegistry/registries/dockaf"}'
-              dockerComposeFile: '/azagent/_work/1/docker-compose.yml'
-              action: 'run services'
+              azureContainerRegistry: '{"loginServer":"dockkafkacr.azurecr.io", "id" : "/subscriptions/783128f5-f4d2-4f2c-bfe4-1d2af23c8de0/resourceGroups/resgrg/providers/Microsoft.ContainerRegistry/registries/dockkafkacr"}'
+              dockerComposeFile: 'docker-compose.yml'
+              action: 'Run services'
