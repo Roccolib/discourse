@@ -10,7 +10,7 @@ jobs:
 - deployment: VMDeploy
   displayName: kafka_containers
   environment:
-    name: vm2v8g
+    name: vm2v8
     resourceType: VirtualMachine
   strategy:
       runOnce:
