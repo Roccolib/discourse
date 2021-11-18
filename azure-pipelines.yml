@@ -14,7 +14,7 @@ jobs:
       script: |
         echo  'Build.ArtifactStagingDirectory'
         dir
-        dir '/home/vsts/work/1/s/transferts'
+        dir '/home/vsts/work/1/s'
 
   - task: CopyFiles@2
     inputs:
