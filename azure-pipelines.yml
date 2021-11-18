@@ -4,32 +4,79 @@
 # https://aka.ms/yaml
 
 trigger:
-- master
+- main
 
 jobs:
+- job: verif
+  steps:
+  - task: CmdLine@2
+    inputs:
+      script: |
+        echo  'Build.ArtifactStagingDirectory'
+        dir
+        dir '/home/vsts/work/1/s/transferts'
+
+  - task: CopyFiles@2
+    inputs:
+      sourceFolder: $(Build.SourcesDirectory)
+      targetFolder: $(Build.ArtifactStagingDirectory)
+
+  - task: PublishPipelineArtifact@0
+    inputs:
+      artifactName: 'v2v8'
+      targetPath: '$(Build.ArtifactStagingDirectory)'
+             
+  - task: DownloadBuildArtifacts@1
+    inputs:
+      buildType: 'current'
+      downloadType: 'single'
+      artifactName: 'v2v8'
+      downloadPath: '$(System.ArtifactsDirectory)'
+
+  - task: CopyFilesOverSSH@0
+    inputs:
+      sshEndpoint: 'id_rsa'
+      sourceFolder: '/home/vsts/work/1/a'
+      contents: 'docker-compose.yml'
+      targetFolder: '/home/azureuser/azagent/azagent/_work'
+      readyTimeout: '20000'
+
+- job: deploy
 - deployment: VMDeploy
-  displayName: kafka_containers
+  displayName: kafka_containers  
   environment:
     name: vm2v8
     resourceType: VirtualMachine
   strategy:
-      runOnce:
+      rolling:
         deploy:
+          pool:
+            vmImage: vm2v8
+
           steps:
+          - script: echo Hello, world!
+            displayName: 'Run a one-line script'
+
+          - script: |
+              echo Add other tasks to build, test, and deploy your project.
+              echo See https://aka.ms/yaml
+            displayName: 'Run a multi-line script'
+
           - task: DockerInstaller@0
             inputs:
               dockerVersion: '17.09.0-ce'
-          - task: CopyFilesOverSSH@0
+         
+          - task: SSH@0
             inputs:
               sshEndpoint: 'id_rsa'
-              sourceFolder: 'https://github.com/Roccolib/discourse/blob/master'
-              contents: 'docker-compose.yml'
+              runOptions: 'commands'
+              commands: 'sudo apt  install docker.io'
               readyTimeout: '20000'
-         
+
           - task: DockerCompose@0
             inputs:
               containerregistrytype: 'Azure Container Registry'
               azureSubscription: 'Azure subscription 1(783128f5-f4d2-4f2c-bfe4-1d2af23c8de0)'
               azureContainerRegistry: '{"loginServer":"dockkafkacr.azurecr.io", "id" : "/subscriptions/783128f5-f4d2-4f2c-bfe4-1d2af23c8de0/resourceGroups/resgrg/providers/Microsoft.ContainerRegistry/registries/dockkafkacr"}'
-              dockerComposeFile: 'docker-compose.yml'
+              dockerComposeFile: '/home/azureuser/azagent/azagent/_work/docker-compose.yml'
               action: 'Run services'
