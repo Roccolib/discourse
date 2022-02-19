@@ -34,6 +34,7 @@ def post_messageBroker():
 #     producer = KafkaProducer(value_serializer=lambda v: json.dumps(v).encode('utf-8'), bootstrap_servers='localhost:9092')
      attente = producer.send(topicName, data)
      result = attente.get(timeout=0.5)
+     producer.flush()
      print ("L ENVOI VERS KAFKA OK POUR JSON", contentType)
      return("json processed"),200
 
@@ -42,6 +43,7 @@ def post_messageBroker():
      producer = KafkaProducer(bootstrap_servers='localhost:9092')
      attente = producer.send(topicName, data)
      result = attente.get(timeout=0.5)
+     producer.flush()
      print ("text ok ")
      return("text processed"),200
 
@@ -53,6 +55,7 @@ def post_messageBroker():
      producer.send(topicName, (jpg_as_text))
      attente = producer.send(topicName, jpg_as_text)
      result = attente.get(timeout=0.5)
+     producer.flush()
      return('image processed')
 
  else:
@@ -61,6 +64,7 @@ def post_messageBroker():
      producer = KafkaProducer(bootstrap_servers='localhost:9092')
      attente = producer.send(topicNameR, data)
      result = attente.get(timeout=0.5)
+     producer.flush()
      print("payload format not supported yet darling")
      return("mauvais format"), 406
 
