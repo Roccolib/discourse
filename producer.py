@@ -33,7 +33,7 @@ def post_messageBroker():
      producer = KafkaProducer(bootstrap_servers = 'localhost:9092', request_timeout_ms=1)
 #     producer = KafkaProducer(value_serializer=lambda v: json.dumps(v).encode('utf-8'), bootstrap_servers='localhost:9092')
      attente = producer.send(topicName, data)
-     result = attente.get(timeout=0.1)
+     result = attente.get(timeout=0.5)
      print ("L ENVOI VERS KAFKA OK POUR JSON", contentType)
      return("json processed"),200
 
@@ -41,7 +41,7 @@ def post_messageBroker():
  elif contentType == 'text/plain':
      producer = KafkaProducer(bootstrap_servers='localhost:9092')
      attente = producer.send(topicName, data)
-     result = attente.get(timeout=0.1)
+     result = attente.get(timeout=0.5)
      print ("text ok ")
      return("text processed"),200
 
@@ -60,7 +60,7 @@ def post_messageBroker():
      print("data au mauvais format recuperes pour text", data)
      producer = KafkaProducer(bootstrap_servers='localhost:9092')
      attente = producer.send(topicNameR, data)
-     result = attente.get(timeout=0.1)
+     result = attente.get(timeout=0.5)
      print("payload format not supported yet darling")
      return("mauvais format"), 406
 
