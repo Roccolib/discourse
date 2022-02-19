@@ -30,7 +30,7 @@ def post_messageBroker():
 
 #Si 'value' de Header est de type Json alors envoyer le contenu vers Kafka
  if contentType == 'application/json':
-     producer = KafkaProducer(bootstrap_servers='localhost:9092')
+     producer = KafkaProducer(bootstrap_servers = 'localhost:9092', request_timeout_ms=1)
 #     producer = KafkaProducer(value_serializer=lambda v: json.dumps(v).encode('utf-8'), bootstrap_servers='localhost:9092')
      attente = producer.send(topicName, data)
      result = attente.get(timeout=0.1)
